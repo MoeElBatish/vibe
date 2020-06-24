@@ -1,10 +1,12 @@
+// dependencies
 const Discord = require('discord.js');
+const ytdl = require("ytdl-core");
+{
+  "TOKEN",
+  "PREFIX"
+} = require(./config.json);
 
 const client = new Discord.Client();
-
-const PREFIX = "!";
-
-const ytdl = require("ytdl-core");
 
 var servers = {};
 
@@ -21,6 +23,10 @@ client.once('disconnect', () => {
 });
 
 client.on('message', message => {
+  if (message.author.bot) return;
+
+  if (!message.content.startsWith(PREFIX)) return;
+
   var args = message.content.substring(PREFIX.length).split(" ");
 
   switch (args[0]) {
@@ -70,4 +76,4 @@ client.on('message', message => {
 })
 
 
-client.login('bot_token');
+client.login('TOKEN');
