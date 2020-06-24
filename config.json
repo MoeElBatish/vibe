@@ -1,4 +1,4 @@
 {
-  "TOKEN" : "bot_token",
+  "TOKEN" : "token",
   "PREFIX" : "!"
 }
