@@ -2,12 +2,22 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client();
 
+const PREFIX = "!";
+
 const ytdl = require("ytdl-core");
 
 var servers = {};
 
 client.once('ready', () => {
     console.log('Vibe is online!');
+});
+
+client.once('reconnecting', () => {
+    console.log('Vibe is reconnecting!');
+});
+
+client.once('disconnect', () => {
+    console.log('Vibe is disconnected');
 });
 
 client.on('message', message => {
@@ -19,7 +29,7 @@ client.on('message', message => {
       function play(connection,message){
         var server = servers[message.guild.id]
 
-        server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: "audioonly"}));
+        server.dispatcher = connection.play(ytdl(server.queue[0], {filter: "audioonly"}));
 
         server.queue.shift();
 
@@ -37,7 +47,7 @@ client.on('message', message => {
         return;
       }
 
-      if(!message.member.voiceChannel) {
+      if(!message.member.voice.channel) {
         message.channel.send("You must be in a channel to play a song");
         return;
       }
@@ -50,11 +60,14 @@ client.on('message', message => {
 
       server.queue.push(args[1]);
 
-      if(!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+      if(!message.member.voice.connection) message.member.voice.channel.join().then(function(connection) {
         play(connection,message);
       })
+    case "skip":
+
+      break;
   }
 })
 
 
-client.login('722699368917893141');
+client.login('bot_token');
